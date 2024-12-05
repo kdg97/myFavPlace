@@ -1,0 +1,72 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:7437026875369235586",
+      "lastPropertyId": "9:1188604491107146633",
+      "name": "Place",
+      "properties": [
+        {
+          "id": "1:8712145999170652633",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3646684479187569224",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:4036008412982347533",
+          "name": "country",
+          "type": 9
+        },
+        {
+          "id": "4:6218518684931336574",
+          "name": "city",
+          "type": 9
+        },
+        {
+          "id": "5:1433617695251446458",
+          "name": "category",
+          "type": 9
+        },
+        {
+          "id": "6:5056430944713446966",
+          "name": "note",
+          "type": 9
+        },
+        {
+          "id": "7:6942108961444706085",
+          "name": "desc",
+          "type": 9
+        },
+        {
+          "id": "8:8148692343092773981",
+          "name": "imagePath",
+          "type": 9
+        },
+        {
+          "id": "9:1188604491107146633",
+          "name": "timestamps",
+          "type": 6
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:7437026875369235586",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
