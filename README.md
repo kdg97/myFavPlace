@@ -1,4 +1,4 @@
-# test_odc
+# MyFavPlaces
 
 A new Flutter project.
 
