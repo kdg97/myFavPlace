@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test_odc/db_helper.dart';
+import 'package:test_odc/functions.dart';
 import 'package:test_odc/home.dart';
 import 'package:test_odc/place.dart';
 
@@ -30,6 +32,8 @@ class _AddPlaceState extends State<AddPlace> {
   TextEditingController placeCategoryController = TextEditingController();
   TextEditingController placeDescriptionController = TextEditingController();
   TextEditingController placeNoteController = TextEditingController();
+  double latitude = 0.0;
+  double longitude = 0.0;
 
   final List<String> categories = [
     'Resto',
@@ -55,7 +59,23 @@ class _AddPlaceState extends State<AddPlace> {
 
   Color main_color = Color.fromARGB(255,55,53,160);
 
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
 
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    Navigator.popAndPushNamed(context, "/home",arguments: {"data":"Fariis"});
+
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +179,7 @@ class _AddPlaceState extends State<AddPlace> {
                       
                           SizedBox(height: 15,),
                           TextFormField(
+                            readOnly: true,
                             controller: placeCountryController,
                               decoration: InputDecoration(
                                 label: Text("pays"),
@@ -185,6 +206,7 @@ class _AddPlaceState extends State<AddPlace> {
                           ),
                           SizedBox(height: 15,),
                           TextFormField(
+                            readOnly: true,
                             controller: placeCityController,
                               decoration: InputDecoration(
                                 label: Text("ville"),
@@ -274,6 +296,37 @@ class _AddPlaceState extends State<AddPlace> {
                               },
                               ),
                               SizedBox(height: 10,),
+                              ElevatedButton.icon(
+                                onPressed: () async {
+                                 Position position = await determinatePosition();
+                                  final data = await getCountryAndCityName(position.latitude,
+                                      position.longitude);
+
+                                 setState(() {
+                                   placeCountryController.text = data[0];
+                                   placeCityController.text = data[1];
+                                   latitude = position.latitude;
+                                   longitude = position.longitude;
+                                 });
+
+                                },
+                                icon: Icon(Icons.place, color: main_color),
+                                label:Text('obtenir la position', style:
+                                TextStyle(color: main_color,
+                                    fontSize: 14)),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      width: 1,
+                                      color: main_color
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 105,vertical: 15),
+                                ),
+                              ),
+                              SizedBox(height: 10,),
                               Container(
                                 padding: EdgeInsets.all(16),
                                 decoration: BoxDecoration(
@@ -308,7 +361,9 @@ class _AddPlaceState extends State<AddPlace> {
                                       city: placeCityController.text,
                                       category: placeCategoryController.text,
                                       note: placeNoteController.text,
-                                      desc: placeDescriptionController.text
+                                      desc: placeDescriptionController.text,
+                                      latitude: latitude,
+                                      longitude: longitude
                                     );
                                     ObjectBox.savePlace(place);
                                    ScaffoldMessenger.of(context).showSnackBar(mySnack);

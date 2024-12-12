@@ -22,7 +22,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 7437026875369235586),
       name: 'Place',
-      lastPropertyId: const obx_int.IdUid(9, 1188604491107146633),
+      lastPropertyId: const obx_int.IdUid(11, 84543776844946734),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -69,6 +69,16 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(9, 1188604491107146633),
             name: 'timestamps',
             type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(10, 5953762486844992453),
+            name: 'latitude',
+            type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(11, 84543776844946734),
+            name: 'longitude',
+            type: 8,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -139,7 +149,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final noteOffset = fbb.writeString(object.note);
           final descOffset = fbb.writeString(object.desc);
           final imagePathOffset = fbb.writeString(object.imagePath);
-          fbb.startTable(10);
+          fbb.startTable(12);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, countryOffset);
@@ -149,6 +159,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(6, descOffset);
           fbb.addOffset(7, imagePathOffset);
           fbb.addInt64(8, object.timestamps);
+          fbb.addFloat64(9, object.latitude);
+          fbb.addFloat64(10, object.longitude);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -171,6 +183,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 18, '');
           final timestampsParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+          final longitudeParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 24, 0);
+          final latitudeParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 22, 0);
           final object = Place(
               name: nameParam,
               country: countryParam,
@@ -179,7 +195,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
               desc: descParam,
               category: categoryParam,
               imagePath: imagePathParam,
-              timestamps: timestampsParam)
+              timestamps: timestampsParam,
+              longitude: longitudeParam,
+              latitude: latitudeParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -225,4 +243,12 @@ class Place_ {
   /// See [Place.timestamps].
   static final timestamps =
       obx.QueryIntegerProperty<Place>(_entities[0].properties[8]);
+
+  /// See [Place.latitude].
+  static final latitude =
+      obx.QueryDoubleProperty<Place>(_entities[0].properties[9]);
+
+  /// See [Place.longitude].
+  static final longitude =
+      obx.QueryDoubleProperty<Place>(_entities[0].properties[10]);
 }

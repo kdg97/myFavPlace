@@ -44,6 +44,11 @@ dependencies:
   objectbox_flutter_libs: ^4.0.3
   get_time_ago: ^2.1.1
   back_button_interceptor: ^8.0.0
+  map_launcher: ^3.5.0
+  flutter_map: 6.1.0
+  geolocator: ^13.0.2
+  shared_preferences: ^2.3.3
+
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_odc/add_place.dart';
+import 'package:test_odc/shared_preferences.dart';
 
 import 'db_helper.dart';
 import 'home.dart';
@@ -9,6 +10,7 @@ late ObjectBox objectbox;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesDB.createSharedPreferenceDb();
   objectbox = await ObjectBox.create();
   runApp(MyApp());
 }

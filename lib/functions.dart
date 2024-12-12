@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:test_odc/shared_preferences.dart';
 
 
 
@@ -106,7 +108,7 @@ Future<bool> isSunny() async {
   return sunset >= currentTime && currentTime >= sunrise;
 }
 
-Future<String> getTemperature() async {
+Future<String> getTemperatureFromServer() async {
   String url = "http://api.openweathermap.org/data"
       "/2.5/weather?q=ouagadougou&"
       "appid=ed1bccfe3b52b20eae393a83f2fed50e&units=metric";
@@ -116,7 +118,60 @@ Future<String> getTemperature() async {
 }
 
 
+Future<List<String>> getCountryAndCityName(double lat,double long) async {
 
+  print(lat);
+  print(long);
+  String url = "https://api-bdc.net/data/reverse-geocode-client?"
+      "latitude=$lat&longitude=$long&localityLanguage=fr";
+
+  dynamic response = await  sendGetRequest(url);
+  return [response["countryName"],response["city"]];
+}
+
+
+
+Future<Position> determinatePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
+
+  // When we reach here, permissions are granted and we can
+  // continue accessing the position of the device.
+  return await Geolocator.getCurrentPosition();
+}
+
+Future<String> getTemperature() async {
+
+  String? temperature ;
+  bool checker = await checkInternetConnexion();
+  if(!checker){
+    temperature = SharedPreferencesDB.getTemperatureFromLocalDb(
+      SharedPreferencesDB.prefs
+    );
+    return temperature ?? "...";
+  }
+  temperature = await getTemperatureFromServer();
+  SharedPreferencesDB.setTemperature(temperature, SharedPreferencesDB.prefs);
+  return temperature;
+}
 
 
 

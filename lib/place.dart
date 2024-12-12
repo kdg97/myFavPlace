@@ -14,9 +14,12 @@ class Place {
   String desc;
   String imagePath;
   int timestamps;
+  double latitude;
+  double longitude;
 
   Place({required this.name,
     required this.country,required this.city,
     required this.note,required this.desc,required this.category,
-  required this.imagePath,required this.timestamps});
+  required this.imagePath,required this.timestamps, required this.longitude,
+  required this.latitude});
 }
