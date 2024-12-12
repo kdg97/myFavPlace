@@ -1,6 +1,7 @@
-# test_odc
+# MyFavPlaces
 
-A new Flutter project.
+![image](https://github.com/user-attachments/assets/c23f3134-66a4-4a38-866c-f1584d8b2c3d)
+
 
 ## Getting Started
 
